@@ -1,1 +1,37 @@
+#include <array>
+#include <vector>
 
+constexpr int N_FILES = 10;
+constexpr int N_COLUMNES = 20;
+
+enum class ColorFigura {
+    VUIT,
+    VERMELL,
+    CIAN,
+    VERD,
+    G Groc,
+    TURQUESA,
+    BLAU,
+    LILLA,
+    GROC_CLAR,
+    GRIS
+};
+
+class Tauler {
+private:
+    std::array<std::array<ColorFigura, N_COLUMNES>, N_FILES> tauler;
+
+    bool estaDinsTauler(int x, int y) const;
+    bool posicioLliure(const std::vector<std::vector<int>>& peces, int x, int y) const;
+    bool tocaAlaPart inferior(const std::vector<std::vector<int>>& peces, int x, int y) const;
+    bool tocaAlaPartEsquerra(const std::vector<std::vector<int>>& peces, int x, int y) const;
+    bool tocaAlaPartDreta(const std::vector<std::vector<int>>& peces, int x, int y) const;
+    bool esColumnaCompleta(int columna) const;
+    void eliminaFilaCompleta(int fila);
+
+public:
+    bool mourePeca(const std::vector<std::vector<int>>& peces, int x, int y, int rotacions);
+    void colocaPeca(const std::vector<std::vector<int>>& peces, int x, int y, int rotacions);
+    const std::array<std::array<ColorFigura, N_COLUMNES>, N_FILES>& getTauler() const;
+    int eliminaFilesCompletes();
+};
