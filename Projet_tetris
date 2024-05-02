@@ -1,1 +1,142 @@
-LE CODE DE MON PROJET TETRIS 
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+const int FILAS = 20;
+const int COLUMNAS = 10;
+
+enum Color {
+    POSICIO_BUIDA = 0,
+    COLOR_GROC = 1,
+    COLOR_BLAUCEL = 2,
+    COLOR_MAGENTA = 3,
+    COLOR_TARONJA = 4,
+    COLOR_BLAUFOSC = 5,
+    COLOR_VERMELL = 6,
+    COLOR_VERD = 7
+};
+
+enum Figura {
+    FIGURA_O = 1,
+    FIGURA_I = 2,
+    FIGURA_T = 3,
+    FIGURA_L = 4,
+    FIGURA_J = 5,
+    FIGURA_Z = 6,
+    FIGURA_S = 7
+};
+
+struct FiguraInfo {
+    Figura tipus;
+    int fila;
+    int columna;
+    int gir;
+};
+
+class Tetris {
+private:
+    vector<vector<int>> m_tauler;
+    FiguraInfo m_figuraActual;
+
+public:
+    Tetris() : m_tauler(FILAS, vector<int>(COLUMNAS, 0)) {}
+
+    void inicialitza(const string& nomFitxer) {
+        ifstream fitxer(nomFitxer);
+        if (fitxer.is_open()) {
+            string linia;
+            for (int fila = 0; fila < FILAS; fila++) {
+                getline(fitxer, linia);
+                istringstream iss(linia);
+                for (int columna = 0; columna < COLUMNAS; columna++) {
+                    iss >> m_tauler[fila][columna]; 
+                }
+            }
+            getline(fitxer, linia);
+            istringstream iss(linia);
+            int tipus, fila, columna, gir;
+            if (iss >> tipus >> fila >> columna >> gir) {
+                m_figuraActual.tipus = static_cast<Figura>(tipus);
+                m_figuraActual.fila = fila;
+                m_figuraActual.columna = columna;
+                m_figuraActual.gir = gir;
+            }
+
+            fitxer.close();
+            cout << "Tablero inicializado desde el archivo: " << nomFitxer << endl;
+        } else {
+            cout << "No se pudo abrir el archivo: " << nomFitxer << endl;
+        }
+    }
+
+    bool giraFigura(int direccio) {
+        
+    }
+
+    bool mouFigura(int dirX) {
+        
+    }
+
+    int baixaFigura() {
+        
+    }
+
+    void escriuTauler(const string& nomFitxer) {
+        ofstream fitxer(nomFitxer);
+        if (fitxer.is_open()) {
+            for (int fila = 0; fila < FILAS; fila++) {
+                for (int columna = 0; columna < COLUMNAS; columna++) {
+                    fitxer << m_tauler[fila][columna] << " ";
+                }
+                fitxer << endl;
+            }
+            fitxer << m_figuraActual.tipus << " " << m_figuraActual.fila << " " << m_figuraActual.columna << " " << m_figuraActual.gir;
+
+            fitxer.close();
+        } else {
+            cout << "No se pudo abrir el archivo: " << nomFitxer << endl;
+        }
+    }
+};
+bool mouFigura(int dirX) {
+
+    Posicion posicion_original = m_figura;
+    Posicion nueva_posicion = {m_figura.fila, m_figura.columna + dirX};
+    bool movimiento_valido = movimientoEsValido(nueva_posicion);
+    if (movimiento_valido) {
+        m_figura = nueva_posicion;
+    }
+
+    return movimiento_valido;
+}
+bool movimientoEsValido(const Posicion& nueva_posicion) {
+    if (nueva_posicion.columna < 0 || nueva_posicion.columna >= COLUMNAS) {
+        return false; 
+    }
+    return true; 
+}
+int baixaFigura() {
+
+    Posicion posicion_original = m_figura;
+    Posicion nueva_posicion = {m_figura.fila + 1, m_figura.columna};
+    bool movimiento_valido = movimientoEsValido(nueva_posicion);
+    if (movimiento_valido) {
+        m_figura = nueva_posicion;
+    } else {
+        
+        colocarFiguraEnTablero();
+        int filas_completadas = eliminarFilasCompletadas();
+        return filas_completadas;
+    }
+
+    return 0; 
+}
+int main() {
+    Tetris tetris;
+    tetris.inicialitza("fitxer.txt");
+
+    return 0;
+}
