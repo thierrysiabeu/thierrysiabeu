@@ -72,7 +72,8 @@ public:
         }
     }
 
-    bool giraFigura(int direccio) {
+    bool giraFigura(int direccio) 
+{
     DireccioGir direccionActual = obtenerDireccionActual();
     DireccioGir nuevaDireccion;
     if (direccio == GIR_HORARI) {
@@ -112,6 +113,15 @@ public:
     }
 
     int baixaFigura() {
+    
+    int posicionFiguraY = obtenerPosicionFiguraY(); 
+    int nuevaPosicionY = posicionFiguraY - 1;
+    if (esMovimientoValido(nuevaPosicionY)) { 
+        actualizarPosicionFiguraY(nuevaPosicionY);
+        return 1; 
+    } else {
+        return 0; 
+    }
         
     }
 
