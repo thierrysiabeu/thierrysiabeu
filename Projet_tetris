@@ -73,10 +73,41 @@ public:
     }
 
     bool giraFigura(int direccio) {
+    DireccioGir direccionActual = obtenerDireccionActual();
+    DireccioGir nuevaDireccion;
+    if (direccio == GIR_HORARI) {
+        if (direccionActual == GIR_HORARI) {
+            nuevaDireccion = GIR_ANTI_HORARI;
+        } else {
+            nuevaDireccion = GIR_HORARI;
+        }
+    } else {
+        if (direccionActual == GIR_HORARI) {
+            nuevaDireccion = GIR_HORARI;
+        } else {
+            nuevaDireccion = GIR_ANTI_HORARI;
+        }
+    }
+    if (esGiroValido(nuevaDireccion)) { 
+        actualizarDireccionFigura(nuevaDireccion); 
+        return true; 
+    } else {
+        return false;
+    }
         
     }
 
     bool mouFigura(int dirX) {
+
+    int posicionActualX = obtenerPosicionActualX(); 
+    int nuevaPosicionX = posicionActualX + dirX;
+    if (esMovimientoValido(nuevaPosicionX)) { 
+
+        actualizarPosicionFiguraX(nuevaPosicionX); 
+        return true;
+    } else {
+        return false; 
+    }
         
     }
 
